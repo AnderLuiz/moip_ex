@@ -1,13 +1,13 @@
 defmodule MoipEx.Config do
 
-  @sandbox_url "https://sandbox.moip.com.br/v2/"
-  @prod_url "https://moip.com.br/v2/"
+  @assinaturas_sandbox_url "https://sandbox.moip.com.br/assinaturas/v1"
+  @assinaturas_prod_url "https://api.moip.com.br/assinaturas/v1"
 
 
-  def api_url do
+  def assinaturas_url do
     case Application.get_env(:moip_ex, :env) do
-      :sandbox -> @sandbox_url
-      _ -> @prod_url
+      :sandbox -> @assinaturas_sandbox_url
+      _ -> @assinaturas_prod_url
     end
   end
 
@@ -17,11 +17,11 @@ defmodule MoipEx.Config do
   end
 
   def api_key do
-    Application.get_env(:moip_ex, :key)
+    Application.get_env(:moip_ex, :api_key)
   end
 
   def authorization do
     Base.encode64("#{token}:#{api_key}")
   end
-  
+
 end
