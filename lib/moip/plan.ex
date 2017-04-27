@@ -1,4 +1,6 @@
 defmodule MoipEx.Plan do
+  alias MoipEx.{Config,Request,Response,Error,Plan,Interval,Trial}
+
   defstruct [code: nil, #Identificador do plano na sua aplicação. Até 65 caracteres
             name: nil, #Nome do plano na sua aplicação. Até 65 caracteres
             description: nil, #Descrição do plano na sua aplicação. Até 255 caracteres.
@@ -24,5 +26,119 @@ defmodule MoipEx.Plan do
                         trial: Trial.t,
                         payment_method: String.t
                       }
+
+
+  def create(plan = %Plan{}) do
+    {:ok,response} = HTTPoison.request(:post,
+                      Config.assinaturas_url <> "/plans",
+                      Request.to_request_string(plan),
+                      Request.headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+    case response do
+      %HTTPoison.Response{status_code: 201} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+    end
+  end
+
+  def list do
+    {:ok,response} = HTTPoison.request(:get,
+                      Config.assinaturas_url <> "/plans",
+                      "",
+                      Request.headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+    case response do
+      %HTTPoison.Response{status_code: 200} ->
+        {:ok, %{"plans" => plans}} = Poison.decode(response.body, as: %{"plans" => [%Plan{trial: %Trial{}, interval: %Interval{}}]})
+        {:ok, plans}
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+    end
+  end
+
+  def get(plan_code) do
+    {:ok,response} = HTTPoison.request(:get,
+                      Config.assinaturas_url <> "/plans/#{plan_code}",
+                      "",
+                      Request.headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+    case response do
+      %HTTPoison.Response{status_code: 200} ->
+        {:ok, plan} = Poison.decode(response.body, as: %Plan{trial: %Trial{}, interval: %Interval{}})
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+      %HTTPoison.Response{status_code: 404} ->
+        {:error,:not_found}
+    end
+  end
+
+  def activate(plan_code) do
+    {:ok,response} = HTTPoison.request(:put,
+                      Config.assinaturas_url <> "/plans/#{plan_code}/activate",
+                      "",
+                      Request.headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+    case response do
+      %HTTPoison.Response{status_code: 200} ->
+        :ok
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+      %HTTPoison.Response{status_code: 404} ->
+        {:error,:not_found}
+    end
+  end
+
+  def inactivate(plan_code) do
+    {:ok,response} = HTTPoison.request(:put,
+                      Config.assinaturas_url <> "/plans/#{plan_code}/inactivate",
+                      "",
+                      Request.headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+    case response do
+      %HTTPoison.Response{status_code: 200} ->
+        :ok
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+      %HTTPoison.Response{status_code: 404} ->
+        {:error,:not_found}
+    end
+  end
+
+  def change(plan = %Plan{}) do
+    {:ok,response} = HTTPoison.request(:put,
+                      Config.assinaturas_url <> "/plans/#{plan.code}",
+                      Request.to_request_string(plan),
+                      Request.headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+    case response do
+      %HTTPoison.Response{status_code: 200} ->
+        :ok
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+      %HTTPoison.Response{status_code: 404} ->
+        {:error,:not_found}
+    end
+  end
+
+
 
 end

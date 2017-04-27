@@ -3,7 +3,7 @@ defmodule MoipEx.Example do
 
   def plan do
     %Plan{
-      code: "plan-code",
+      code: "plan-#{Enum.random(0..9999)}",
       name: "Plano 01",
       description: "Descricao do plano 01",
       amount: 500,
