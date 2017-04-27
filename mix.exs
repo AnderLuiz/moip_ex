@@ -8,6 +8,8 @@ defmodule MoipEx.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: "https://github.com/AnderLuiz/moip_ex",
+     package: package(),
+     description: description(),
      deps: deps()]
   end
 
