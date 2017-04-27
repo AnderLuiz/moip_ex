@@ -140,6 +140,4 @@ defmodule MoipEx.Plan do
     end
   end
 
-
-
 end
