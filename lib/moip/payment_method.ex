@@ -1,4 +1,4 @@
-defmodule MoipEx.PaymentMethod do
+defmodule MoipEx.Payment.Method do
   alias MoipEx.{CreditCard}
 
   defstruct [code: nil, description: nil, credit_card: nil]

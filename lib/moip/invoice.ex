@@ -1,14 +1,14 @@
 defmodule MoipEx.Invoice do
-  alias MoipEx.{Config,Subscription,Plan,Customer,InvoiceStatus, Request, Response, Error, Invoice, DateTime,InvoiceItem}
+  alias MoipEx.{Config,Subscription,Plan,Customer,Invoice.Status, Request, Response, Error, Invoice, DateTime,Invoice.Item}
 
   defstruct [amount: nil, status: nil, creation_date: nil, id: nil, occurrence: nil, subscription_code: nil, customer: nil, items: nil, plan: nil]
 
   @type t :: %__MODULE__{
                         amount: integer, #Valor total cobrado do cliente, em centavos.
-                        status: InvoiceStatus.t,
+                        status: Invoice.Status.t,
                         creation_date: DateTime.t,
                         id: String.t,
-                        items: list(InvoiceItem.t), #Detalhamento dos itens que compõem a fatura
+                        items: list(Invoice.Item.t), #Detalhamento dos itens que compõem a fatura
                         subscription_code: String.t,
                         occurrence: integer, #Ocorrência da fatura na assinatura (ex. 3 para a terceira fatura).
                         customer: Customer.t,
@@ -26,10 +26,10 @@ defmodule MoipEx.Invoice do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, %{"invoices" => invoices}} = Poison.decode(response.body, as: %{"invoices" => [%Invoice{
                                                                                                     creation_date: %DateTime{},
-                                                                                                    status: %InvoiceStatus{},
+                                                                                                    status: %Invoice.Status{},
                                                                                                     customer: %Customer{},
                                                                                                     plan: %Plan{},
-                                                                                                    items: [%InvoiceItem{}]
+                                                                                                    items: [%Invoice.Item{}]
                                                                                                     }]})
         {:ok, invoices}
       %HTTPoison.Response{status_code: 400} ->
@@ -46,10 +46,10 @@ defmodule MoipEx.Invoice do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, plan} = Poison.decode(response.body, as: %Invoice{
                                                           creation_date: %DateTime{},
-                                                          status: %InvoiceStatus{},
+                                                          status: %Invoice.Status{},
                                                           plan: %Plan{},
                                                           customer: %Customer{},
-                                                          items: [%InvoiceItem{}]
+                                                          items: [%Invoice.Item{}]
                                                         })
       %HTTPoison.Response{status_code: 400} ->
         {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})

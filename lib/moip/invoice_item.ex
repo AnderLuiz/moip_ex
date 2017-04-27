@@ -1,4 +1,4 @@
-defmodule MoipEx.InvoiceItem do
+defmodule MoipEx.Invoice.Item do
   defstruct [amount: nil,
             type: nil]
 

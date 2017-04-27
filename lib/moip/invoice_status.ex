@@ -1,4 +1,4 @@
-defmodule MoipEx.InvoiceStatus do
+defmodule MoipEx.Invoice.Status do
 
   @moduledoc """
 

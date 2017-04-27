@@ -1,6 +1,6 @@
 defmodule MoipEx.Subscription do
     alias MoipEx.{Customer, Plan, Subscription, Request, Response, Error, Config, BillingInfo, CreditCard, DateTime, Date,Invoice,
-                  InvoiceStatus, SubscriptionResponse, Trial}
+                  Invoice.Status, SubscriptionResponse, Trial}
 
     defstruct [code: nil, amount: nil, payment_method: nil, plan: nil, customer: nil, creation_date: nil, status: nil,
               next_invoice_date: nil, expiration_date: nil, trial: nil]
@@ -29,7 +29,7 @@ defmodule MoipEx.Subscription do
                                                   creation_date: %DateTime{},
                                                   expiration_date: %Date{},
                                                   next_invoice_date: %Date{},
-                                                  invoice: %Invoice{status: %InvoiceStatus{}},
+                                                  invoice: %Invoice{status: %Invoice.Status{}},
                                                   customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                   plan: %Plan{}
                                                 }
