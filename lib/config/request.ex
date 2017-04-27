@@ -3,7 +3,7 @@ defmodule MoipEx.Request do
 
   def headers do
     [
-      "Content-Type": "application/json;charset=ISO-8859-1",
+      "Content-Type": "application/json;charset=UTF-8",
       "Accept": "application/json",
       "Authorization": "Basic #{Config.authorization}"
     ]
