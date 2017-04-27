@@ -5,6 +5,6 @@ defmodule MoipEx.Response do
 
   @type t :: %__MODULE__{
                         message: String.t,
-                        errors: list(Error.t),
+                        errors: list(Error.t)
                         }
 end

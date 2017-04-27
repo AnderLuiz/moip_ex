@@ -1,20 +1,74 @@
 defmodule MoipEx.Example do
-  alias MoipEx.{Plan,Trial,Interval, Customer,Address,BillingInfo,CreditCard}
+  alias MoipEx.{Plan, Subscription,Trial,Interval, Customer,Address,BillingInfo,CreditCard}
 
-  def plan do
+  def plan(code) do
     %Plan{
-      code: "plan-#{Enum.random(0..9999)}",
-      name: "Plano 01",
-      description: "Descricao do plano 01",
-      amount: 500,
-      setup_fee: 299,
-      max_qty: 1000,
+      code: code,
+      name: "Nome #{code}",
+      description: "Descricao do plano #{code}",
+      amount: Enum.random(500..9999),
+      setup_fee: Enum.random(2000..99999),
+      max_qty: Enum.random(500..1000),
       interval: interval,
-      billing_cycles: 12,
+      billing_cycles: Enum.random(5..24),
       trial: trial,
       status: "ACTIVE",
       payment_method: "CREDIT_CARD",
     }
+  end
+
+  def plan do
+    plan("plan-#{Enum.random(0..99999)}")
+  end
+
+  def customer do
+    %Customer{
+      code: "cliente-#{Enum.random(0..99999)}",
+      email: "email@cliente.com.br",
+      fullname: "José Castro",
+      cpf: "38330516555",
+      phone_area_code: "11",
+      phone_number: "123456789",
+      birthdate_day: "12",
+      birthdate_month: "06",
+      birthdate_year: "1985",
+      address: address,
+      billing_info: billing_info
+    }
+  end
+
+  def subscription(plan = %Plan{amount: amount},customer = %Customer{}) do
+    %Subscription{
+      code: "subscription-#{Enum.random(0..99999)}",
+      amount: "#{amount}",
+      payment_method: "CREDIT_CARD",
+      plan: plan,
+      customer: customer
+    }
+  end
+
+  def subscription(plan = %Plan{}, customer = %Customer{}) do
+    %Subscription{
+      code: "subscription-#{Enum.random(0..99999)}",
+      amount: "510",
+      payment_method: "CREDIT_CARD",
+      plan: plan,
+      customer: customer
+    }
+  end
+
+  def subscription(plan_code,customer = %Customer{}) do
+    %Subscription{
+      code: "subscription-#{Enum.random(0..99999)}",
+      amount: "510",
+      payment_method: "CREDIT_CARD",
+      plan: plan,
+      customer: customer
+    }
+  end
+
+  def subscription(plan = %Plan{}) do
+    subscription(plan, customer)
   end
 
   def trial do
@@ -29,22 +83,6 @@ defmodule MoipEx.Example do
     %Interval{
       unit: "MONTH",
       length: 1
-    }
-  end
-
-  def customer do
-    %Customer{
-      code: "cliente-#{Enum.random(0..9999)}",
-      email: "email@cliente.com.br",
-      fullname: "José Castro",
-      cpf: "38330516555",
-      phone_area_code: "11",
-      phone_number: "123456789",
-      birthdate_day: "12",
-      birthdate_month: "06",
-      birthdate_year: "1985",
-      address: address,
-      billing_info: billing_info
     }
   end
 
@@ -70,9 +108,9 @@ defmodule MoipEx.Example do
   def credit_card do
     %CreditCard{
       holder_name: "João da Silva",
-      number: "4111111111111111",
+      number: "411111111111#{Enum.random(0..9)}#{Enum.random(0..9)}#{Enum.random(0..9)}#{Enum.random(0..9)}",
       expiration_month: "04",
-      expiration_year: "23",
+      expiration_year: "#{Enum.random(25..30)}",
       vault: nil
     }
   end

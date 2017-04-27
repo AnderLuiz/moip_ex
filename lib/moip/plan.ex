@@ -10,10 +10,10 @@ defmodule MoipEx.Plan do
             interval: nil, #Node do intervalo do plano, contendo unit e length condicional
             billing_cycles: nil, #Quantidade de ciclos (faturas) que a assinatura terá até expirar (se não informar, não haverá expiração).
             trial: nil, #Node do trial, contendo days e enabled
-            status: "ACTIVE", #Status do plano. Pode ser ACTIVE ou INACTIVE. O padrão é ACTIVE.
-            payment_method: "CREDIT_CARD"] #Formas de pagamentos aceitas no plano. BOLETO, CREDIT_CARD ou ALL. Caso o atributo não seja informado, a forma de pagamento default é CREDIT_CARD.
-
-  @enforce_keys [:code, :name, :amount]
+            status: nil, #Status do plano. Pode ser ACTIVE ou INACTIVE. O padrão é ACTIVE.
+            payment_method: nil, #Formas de pagamentos aceitas no plano. BOLETO, CREDIT_CARD ou ALL. Caso o atributo não seja informado, a forma de pagamento default é CREDIT_CARD.
+            id: nil]
+  @enforce_keys [:code]
   @type t :: %__MODULE__{
                         code: String.t,
                         name: String.t,
@@ -24,7 +24,8 @@ defmodule MoipEx.Plan do
                         interval: Interval.t,
                         billing_cycles: integer,
                         trial: Trial.t,
-                        payment_method: String.t
+                        payment_method: String.t,
+                        id: String.t
                       }
 
 

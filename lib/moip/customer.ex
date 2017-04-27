@@ -5,7 +5,7 @@ defmodule MoipEx.Customer do
             phone_number: nil, birthdate_day: nil, birthdate_month: nil,
             birthdate_year: nil, address: nil, billing_info: nil]
 
-  @enforce_keys [:code, :fullname, :email, :cpf, :phone_area_code, :phone_number, :birthdate_day, :birthdate_month, :birthdate_year, :address ]
+  @enforce_keys [:code]
 
   @type t :: %__MODULE__{
                         code: String.t, # Identificador do cliente. Até 65 caracteres..
