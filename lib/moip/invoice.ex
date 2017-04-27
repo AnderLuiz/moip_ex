@@ -21,11 +21,7 @@ defmodule MoipEx.Invoice do
   end
 
   def list_by_subscription(subscription_code) do
-    {:ok,response} = HTTPoison.request(:get,
-                      Config.assinaturas_url <> "/subscriptions/#{subscription_code}/invoices",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/invoices")
     case response do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, %{"invoices" => invoices}} = Poison.decode(response.body, as: %{"invoices" => [%Invoice{
@@ -45,11 +41,7 @@ defmodule MoipEx.Invoice do
   end
 
   def get(invoice_id) do
-    {:ok,response} = HTTPoison.request(:get,
-                      Config.assinaturas_url <> "/invoices/#{invoice_id}",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/invoices/#{invoice_id}")
     case response do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, plan} = Poison.decode(response.body, as: %Invoice{
@@ -68,6 +60,21 @@ defmodule MoipEx.Invoice do
         {:error,:not_found}
     end
   end
+
+  def retry(invoice_id) do
+    {:ok,response} = Request.request(:post, Config.assinaturas_url <> "/invoices/#{invoice_id}/retry")
+    case response do
+      %HTTPoison.Response{status_code: 200} ->
+        :ok
+      %HTTPoison.Response{status_code: 400} ->
+        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+        {:error, moip_response}
+      %HTTPoison.Response{status_code: 401} ->
+        {:error,:authentication_error}
+    end
+  end
+
+
 
 
 end

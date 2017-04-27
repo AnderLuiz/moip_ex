@@ -20,4 +20,14 @@ defmodule MoipEx.Request do
     end
   end
 
+
+
+  def request(method, path, body \\ "", headers \\ headers ) do
+    HTTPoison.request(method,
+                      path,
+                      body,
+                      headers,
+                      timeout: :infinity, recv_timeout: :infinity)
+  end
+
 end

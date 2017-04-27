@@ -30,11 +30,7 @@ defmodule MoipEx.Plan do
 
 
   def create(plan = %Plan{}) do
-    {:ok,response} = HTTPoison.request(:post,
-                      Config.assinaturas_url <> "/plans",
-                      Request.to_request_string(plan),
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:post, Config.assinaturas_url <> "/plans", Request.to_request_string(plan))
     case response do
       %HTTPoison.Response{status_code: 201} ->
         {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
@@ -47,11 +43,7 @@ defmodule MoipEx.Plan do
   end
 
   def list do
-    {:ok,response} = HTTPoison.request(:get,
-                      Config.assinaturas_url <> "/plans",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/plans")
     case response do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, %{"plans" => plans}} = Poison.decode(response.body, as: %{"plans" => [%Plan{trial: %Trial{}, interval: %Interval{}}]})
@@ -65,11 +57,7 @@ defmodule MoipEx.Plan do
   end
 
   def get(plan_code) do
-    {:ok,response} = HTTPoison.request(:get,
-                      Config.assinaturas_url <> "/plans/#{plan_code}",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/plans/#{plan_code}")
     case response do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, plan} = Poison.decode(response.body, as: %Plan{trial: %Trial{}, interval: %Interval{}})
@@ -84,11 +72,7 @@ defmodule MoipEx.Plan do
   end
 
   def activate(plan_code) do
-    {:ok,response} = HTTPoison.request(:put,
-                      Config.assinaturas_url <> "/plans/#{plan_code}/activate",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/plans/#{plan_code}/activate")
     case response do
       %HTTPoison.Response{status_code: 200} ->
         :ok
@@ -103,11 +87,7 @@ defmodule MoipEx.Plan do
   end
 
   def inactivate(plan_code) do
-    {:ok,response} = HTTPoison.request(:put,
-                      Config.assinaturas_url <> "/plans/#{plan_code}/inactivate",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/plans/#{plan_code}/inactivate")
     case response do
       %HTTPoison.Response{status_code: 200} ->
         :ok
@@ -122,11 +102,7 @@ defmodule MoipEx.Plan do
   end
 
   def change(plan = %Plan{}) do
-    {:ok,response} = HTTPoison.request(:put,
-                      Config.assinaturas_url <> "/plans/#{plan.code}",
-                      Request.to_request_string(plan),
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+    {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/plans/#{plan.code}", Request.to_request_string(plan))
     case response do
       %HTTPoison.Response{status_code: 200} ->
         :ok

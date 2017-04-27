@@ -20,11 +20,7 @@ defmodule MoipEx.Subscription do
                         }
 
     def create(subscription = %Subscription{}, new_customer \\ false) do
-      {:ok,response} = HTTPoison.request(:post,
-                        Config.assinaturas_url <> "/subscriptions?new_customer=#{new_customer}",
-                        Request.to_request_string(subscription),
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
+      {:ok,response} = Request.request(:post, Config.assinaturas_url <> "/subscriptions?new_customer=#{new_customer}", Request.to_request_string(subscription))
       case response do
         %HTTPoison.Response{status_code: 201} ->
           {:ok, moip_response} = Poison.decode(response.body, as: %SubscriptionResponse{
@@ -47,11 +43,7 @@ defmodule MoipEx.Subscription do
     end
 
     def list do
-      {:ok,response} = HTTPoison.request(:get,
-                        Config.assinaturas_url <> "/subscriptions",
-                        "",
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
+      {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions")
       case response do
         %HTTPoison.Response{status_code: 200} ->
           {:ok, %{"subscriptions" => subscriptions}} = Poison.decode(response.body, as: %{"subscriptions" => [%Subscription{
@@ -70,12 +62,7 @@ defmodule MoipEx.Subscription do
     end
 
     def get(subscription_code) do
-      {:ok,response} = HTTPoison.request(:get,
-                        Config.assinaturas_url <> "/subscriptions/#{subscription_code}",
-                        "",
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
-
+      {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions/#{subscription_code}")
       case response do
         %HTTPoison.Response{status_code: 200} ->
           {:ok, plan} = Poison.decode(response.body, as: %Subscription{
@@ -97,11 +84,7 @@ defmodule MoipEx.Subscription do
     end
 
     def suspend(subscription_code) do
-      {:ok,response} = HTTPoison.request(:put,
-                        Config.assinaturas_url <> "/subscriptions/#{subscription_code}/suspend",
-                        "",
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
+      {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/suspend")
       case response do
         %HTTPoison.Response{status_code: 200} ->
           :ok
@@ -116,11 +99,7 @@ defmodule MoipEx.Subscription do
     end
 
     def activate(subscription_code) do
-      {:ok,response} = HTTPoison.request(:put,
-                        Config.assinaturas_url <> "/subscriptions/#{subscription_code}/activate",
-                        "",
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
+      {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/activate")
       case response do
         %HTTPoison.Response{status_code: 200} ->
           :ok
@@ -135,11 +114,7 @@ defmodule MoipEx.Subscription do
     end
 
     def cancel(subscription_code) do
-      {:ok,response} = HTTPoison.request(:put,
-                        Config.assinaturas_url <> "/subscriptions/#{subscription_code}/cancel",
-                        "",
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
+      {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/cancel")
       case response do
         %HTTPoison.Response{status_code: 200} ->
           :ok
@@ -154,11 +129,7 @@ defmodule MoipEx.Subscription do
     end
 
     def change(subscription = %Subscription{}) do
-      {:ok,response} = HTTPoison.request(:put,
-                        Config.assinaturas_url <> "/subscriptions/#{subscription.code}",
-                        Request.to_request_string(subscription),
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
+      {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription.code}",Request.to_request_string(subscription) )
       case response do
         %HTTPoison.Response{status_code: 200} ->
           :ok
