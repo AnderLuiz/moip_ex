@@ -33,10 +33,9 @@ defmodule MoipEx.Mixfile do
     ]
   end
 
-
-
   def deps do
     [
+      {:ex_doc, "~> 0.13", only: :dev},
       {:httpoison, "~> 0.9.0"},
       {:poison, "~> 2.0 or ~> 3.0"},
     ]

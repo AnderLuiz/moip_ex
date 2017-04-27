@@ -1,18 +1,24 @@
 # MoipEx
 
-Em desenvolvimento. Não utilize para produção.
+Em desenvolvimento. Não pronto para produção. Confira a documentação em https://hex.pm/packages/moip_ex.
+
+
+#Config
+
+No config.exs, adicione as configuraçoes da conta no moip_ex
+
+```
+config :moip_ex,
+  token: "TOKEN",
+  api_key: "API_KEY",
+  env: :sandbox   #ou prod
+
+```
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `moip_ex` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [{:moip_ex, "~> 0.1.0"}]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/moip_ex](https://hexdocs.pm/moip_ex).
