@@ -7,7 +7,7 @@ Em desenvolvimento. Não pronto para produção. Confira a documentação em htt
 
 No config.exs, adicione as configuraçoes da conta no moip_ex
 
-```
+```elixir
 config :moip_ex,
   token: "TOKEN",
   api_key: "API_KEY",
