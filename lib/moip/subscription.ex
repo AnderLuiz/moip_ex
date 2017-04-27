@@ -13,7 +13,7 @@ defmodule MoipEx.Subscription do
                           plan: Plan.t,
                           customer: Customer.t,
                           creation_date: DateTime.t,
-                          status: String.t,
+                          status: String.t, #Active, suspended, expired,overdue, canceled,trial
                           next_invoice_date: Date.t,
                           expiration_date: Date.t,
                           trial: Trial.t
@@ -172,24 +172,4 @@ defmodule MoipEx.Subscription do
       end
     end
 
-    def list_invoices(subscription_code) do
-      {:ok,response} = HTTPoison.request(:get,
-                        Config.assinaturas_url <> "/subscriptions/#{subscription_code}/invoices",
-                        "",
-                        Request.headers,
-                        timeout: :infinity, recv_timeout: :infinity)
-      case response do
-        %HTTPoison.Response{status_code: 200} ->
-          {:ok, %{"invoices" => subscriptions}} = Poison.decode(response.body, as: %{"invoices" => [%Invoice{
-                                                                                                      creation_date: %DateTime{},
-                                                                                                      status: %InvoiceStatus{},
-                                                                                                      }]})
-          {:ok, subscriptions}
-        %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
-        %HTTPoison.Response{status_code: 401} ->
-          {:error,:authentication_error}
-      end
-    end
 end
