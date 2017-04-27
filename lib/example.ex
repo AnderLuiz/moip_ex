@@ -1,5 +1,5 @@
 defmodule MoipEx.Example do
-  alias MoipEx.{Plan, Subscription,Trial,Interval, Customer,Address,BillingInfo,CreditCard}
+  alias MoipEx.{Plan, Subscription,Trial,Interval, Customer,Address,BillingInfo,CreditCard, Preference, Notification, Email, Email.Config}
 
   def plan(code) do
     %Plan{
@@ -112,6 +112,32 @@ defmodule MoipEx.Example do
       expiration_month: "04",
       expiration_year: "#{Enum.random(25..30)}",
       vault: nil
+    }
+  end
+
+  def preference do
+    %Preference{
+      notification: notification
+    }
+  end
+
+  def notification do
+    %Notification{
+      webhook: "http://exemploldeurl.com.br/assinaturas",
+      email: email
+    }
+  end
+
+  def email do
+    %Email{
+      merchant: email_config,
+      customer: email_config
+    }
+  end
+
+  def email_config do
+    %Email.Config{
+      enabled: false
     }
   end
 
