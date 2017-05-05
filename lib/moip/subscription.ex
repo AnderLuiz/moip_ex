@@ -61,6 +61,26 @@ defmodule MoipEx.Subscription do
       end
     end
 
+    def list_by_customer(customer_code) do
+      {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions")
+      case response do
+        %HTTPoison.Response{status_code: 200} ->
+          {:ok, %{"subscriptions" => subscriptions}} = Poison.decode(response.body, as: %{"subscriptions" => [%Subscription{
+                                                                                                      creation_date: %DateTime{},
+                                                                                                      expiration_date: %Date{},
+                                                                                                      customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
+                                                                                                      plan: %Plan{},
+                                                                                                      }]})
+
+          {:ok, Enum.filter(subscriptions, fn(subscription) -> subscription.customer.code == customer_code  end)}
+        %HTTPoison.Response{status_code: 400} ->
+          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+          {:error, moip_response}
+        %HTTPoison.Response{status_code: 401} ->
+          {:error,:authentication_error}
+      end
+    end
+
     def get(subscription_code) do
       {:ok,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions/#{subscription_code}")
       case response do
@@ -119,13 +139,29 @@ defmodule MoipEx.Subscription do
         %HTTPoison.Response{status_code: 200} ->
           :ok
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            {:error, _ , _} -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
         %HTTPoison.Response{status_code: 404} ->
           {:error,:not_found}
       end
+    end
+
+    def cancel_all_by_customer(customer_code) do
+      case list_by_customer(customer_code) do
+        {:ok,subscriptions} ->
+          Enum.map(subscriptions, fn(subscription) ->
+            if(subscription.status != "CANCELED") do
+              cancel(subscription.code)
+            end
+          end)
+          :ok
+        {:error, response} -> {:error, response}
+      end
+
     end
 
     def change(subscription = %Subscription{}) do

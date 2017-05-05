@@ -1,9 +1,9 @@
 # MoipEx
 
-Em desenvolvimento. Não pronto para produção. Confira a documentação em https://hex.pm/packages/moip_ex.
+Em desenvolvimento. Não pronto para produção. Confira a documentação em https://hexdocs.pm/moip_ex/api-reference.html.
 
 
-#Config
+# Config
 
 No config.exs, adicione as configuraçoes da conta no moip_ex
 

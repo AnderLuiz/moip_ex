@@ -13,7 +13,7 @@ defmodule MoipEx.Example do
       billing_cycles: Enum.random(5..24),
       trial: trial,
       status: "ACTIVE",
-      payment_method: "CREDIT_CARD",
+      payment_method: "ALL",
     }
   end
 
