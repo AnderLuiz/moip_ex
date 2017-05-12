@@ -35,8 +35,10 @@ defmodule MoipEx.Subscription do
                                                 }
                                               )
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            _ -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
       end
@@ -54,8 +56,10 @@ defmodule MoipEx.Subscription do
                                                                                                       }]})
           {:ok, subscriptions}
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            _ -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
       end
@@ -74,8 +78,10 @@ defmodule MoipEx.Subscription do
 
           {:ok, Enum.filter(subscriptions, fn(subscription) -> subscription.customer.code == customer_code  end)}
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            _ -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
       end
@@ -94,8 +100,10 @@ defmodule MoipEx.Subscription do
                                                           trial: %Trial{}
                                                           })
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            _ -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
         %HTTPoison.Response{status_code: 404} ->
@@ -109,8 +117,10 @@ defmodule MoipEx.Subscription do
         %HTTPoison.Response{status_code: 200} ->
           :ok
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            _ -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
         %HTTPoison.Response{status_code: 404} ->
@@ -124,8 +134,10 @@ defmodule MoipEx.Subscription do
         %HTTPoison.Response{status_code: 200} ->
           :ok
         %HTTPoison.Response{status_code: 400} ->
-          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-          {:error, moip_response}
+          case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+            {:ok, moip_response} -> {:error, moip_response}
+            _ -> {:error, %Response{errors: [%Error{}]}}
+          end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}
         %HTTPoison.Response{status_code: 404} ->
@@ -141,7 +153,7 @@ defmodule MoipEx.Subscription do
         %HTTPoison.Response{status_code: 400} ->
           case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
             {:ok, moip_response} -> {:error, moip_response}
-            {:error, _ , _} -> {:error, %Response{errors: [%Error{}]}}
+            _ -> {:error, %Response{errors: [%Error{}]}}
           end
         %HTTPoison.Response{status_code: 401} ->
           {:error,:authentication_error}

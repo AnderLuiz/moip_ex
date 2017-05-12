@@ -35,8 +35,10 @@ defmodule MoipEx.Plan do
       %HTTPoison.Response{status_code: 201} ->
         {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
     end
@@ -49,8 +51,10 @@ defmodule MoipEx.Plan do
         {:ok, %{"plans" => plans}} = Poison.decode(response.body, as: %{"plans" => [%Plan{trial: %Trial{}, interval: %Interval{}}]})
         {:ok, plans}
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
     end
@@ -62,8 +66,10 @@ defmodule MoipEx.Plan do
       %HTTPoison.Response{status_code: 200} ->
         {:ok, plan} = Poison.decode(response.body, as: %Plan{trial: %Trial{}, interval: %Interval{}})
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
       %HTTPoison.Response{status_code: 404} ->
@@ -77,8 +83,10 @@ defmodule MoipEx.Plan do
       %HTTPoison.Response{status_code: 200} ->
         :ok
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
       %HTTPoison.Response{status_code: 404} ->
@@ -92,8 +100,10 @@ defmodule MoipEx.Plan do
       %HTTPoison.Response{status_code: 200} ->
         :ok
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
       %HTTPoison.Response{status_code: 404} ->
@@ -107,8 +117,10 @@ defmodule MoipEx.Plan do
       %HTTPoison.Response{status_code: 200} ->
         :ok
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
       %HTTPoison.Response{status_code: 404} ->

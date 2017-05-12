@@ -33,8 +33,10 @@ defmodule MoipEx.Invoice do
                                                                                                     }]})
         {:ok, invoices}
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
     end
@@ -52,8 +54,10 @@ defmodule MoipEx.Invoice do
                                                           items: [%Invoice.Item{}]
                                                         })
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
       %HTTPoison.Response{status_code: 404} ->
@@ -67,8 +71,10 @@ defmodule MoipEx.Invoice do
       %HTTPoison.Response{status_code: 200} ->
         :ok
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
     end
