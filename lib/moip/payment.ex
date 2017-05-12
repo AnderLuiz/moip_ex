@@ -23,8 +23,10 @@ defmodule MoipEx.Payment do
                                                                                                     }]})
         {:ok, payments}
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
     end
@@ -40,8 +42,10 @@ defmodule MoipEx.Payment do
                                                               payment_method: %Payment.Method{credit_card: %CreditCard{}}
                                                               })
       %HTTPoison.Response{status_code: 400} ->
-        {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-        {:error, moip_response}
+        case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
+          {:ok, moip_response} -> {:error, moip_response}
+          _ -> {:error, %Response{errors: [%Error{}]}}
+        end
       %HTTPoison.Response{status_code: 401} ->
         {:error,:authentication_error}
       %HTTPoison.Response{status_code: 404} ->
