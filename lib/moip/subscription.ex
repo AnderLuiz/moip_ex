@@ -1,9 +1,9 @@
 defmodule MoipEx.Subscription do
     alias MoipEx.{Customer, Plan, Subscription, Request, Response, Error, Config, BillingInfo, CreditCard, DateTime, Date,Invoice,
-                  Invoice.Status, SubscriptionResponse, Trial}
+                  Invoice.Status, SubscriptionResponse, Trial, Coupon}
 
     defstruct [code: nil, amount: nil, payment_method: nil, plan: nil, customer: nil, creation_date: nil, status: nil,
-              next_invoice_date: nil, expiration_date: nil, trial: nil]
+              next_invoice_date: nil, expiration_date: nil, trial: nil, coupon: nil]
 
     @enforce_keys [:code, :amount, :plan, :customer]
     @type t :: %__MODULE__{
@@ -16,7 +16,8 @@ defmodule MoipEx.Subscription do
                           status: String.t, #Active, suspended, expired,overdue, canceled,trial
                           next_invoice_date: Date.t,
                           expiration_date: Date.t,
-                          trial: Trial.t
+                          trial: Trial.t,
+                          coupon: Coupon.t
                         }
 
     def create(subscription = %Subscription{}, new_customer \\ false) do
@@ -178,6 +179,53 @@ defmodule MoipEx.Subscription do
 
     def change(subscription = %Subscription{}) do
       {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription.code}",Request.to_request_string(subscription) )
+      case response do
+        %HTTPoison.Response{status_code: 200} ->
+          :ok
+        %HTTPoison.Response{status_code: 400} ->
+          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+          {:error, moip_response}
+        %HTTPoison.Response{status_code: 401} ->
+          {:error,:authentication_error}
+        %HTTPoison.Response{status_code: 404} ->
+          {:error,:not_found}
+      end
+    end
+
+    def associate_coupon(subscription_code, coupon_code) do
+      request_body = %{coupon: %{code:  coupon_code}}
+      {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}",Request.to_request_string(request_body) )
+      case response do
+        %HTTPoison.Response{status_code: 200} ->
+          :ok
+        %HTTPoison.Response{status_code: 400} ->
+          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+          {:error, moip_response}
+        %HTTPoison.Response{status_code: 401} ->
+          {:error,:authentication_error}
+        %HTTPoison.Response{status_code: 404} ->
+          {:error,:not_found}
+      end
+    end
+
+    def associate_coupon(subscription_code, coupon_code, plan_code) do
+      request_body = %{coupon: %{code:  coupon_code}, plan: %{code:  plan_code}}
+      {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}",Request.to_request_string(request_body) )
+      case response do
+        %HTTPoison.Response{status_code: 200} ->
+          :ok
+        %HTTPoison.Response{status_code: 400} ->
+          {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
+          {:error, moip_response}
+        %HTTPoison.Response{status_code: 401} ->
+          {:error,:authentication_error}
+        %HTTPoison.Response{status_code: 404} ->
+          {:error,:not_found}
+      end
+    end
+
+    def delete_coupon(subscription_code) do
+      {:ok,response} = Request.request(:delete, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/coupon")
       case response do
         %HTTPoison.Response{status_code: 200} ->
           :ok
