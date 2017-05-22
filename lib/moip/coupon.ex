@@ -70,6 +70,13 @@ defmodule MoipEx.Coupon do
     end
   end
 
+  def get_by_subscription(subscription) do
+    case MoipEx.Subscription.get(subscription) do
+      {:ok, subscription} -> {:ok, subscription.coupon}
+      {:error, response} -> {:error, response}
+    end
+  end
+
   def activate(coupon_code) do
     {:ok,response} = Request.request(:put, Config.assinaturas_url <> "/coupons/#{coupon_code}/active")
     case response do
