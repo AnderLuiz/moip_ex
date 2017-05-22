@@ -1,6 +1,6 @@
 defmodule MoipEx.Subscription do
     alias MoipEx.{Customer, Plan, Subscription, Request, Response, Error, Config, BillingInfo, CreditCard, DateTime, Date,Invoice,
-                  Invoice.Status, SubscriptionResponse, Trial, Coupon}
+                  Invoice.Status, SubscriptionResponse, Trial, Coupon, Discount, Duration}
 
     defstruct [code: nil, amount: nil, payment_method: nil, plan: nil, customer: nil, creation_date: nil, status: nil,
               next_invoice_date: nil, expiration_date: nil, trial: nil, coupon: nil]
@@ -52,7 +52,7 @@ defmodule MoipEx.Subscription do
           {:ok, %{"subscriptions" => subscriptions}} = Poison.decode(response.body, as: %{"subscriptions" => [%Subscription{
                                                                                                       creation_date: %DateTime{},
                                                                                                       expiration_date: %Date{},
-                                                                                                      coupon: %Coupon{},
+                                                                                                      coupon: %Coupon{discount: %Discount{}, duration: %Duration{}},
                                                                                                       customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                                                                       plan: %Plan{},
                                                                                                       }]})
@@ -74,7 +74,7 @@ defmodule MoipEx.Subscription do
           {:ok, %{"subscriptions" => subscriptions}} = Poison.decode(response.body, as: %{"subscriptions" => [%Subscription{
                                                                                                       creation_date: %DateTime{},
                                                                                                       expiration_date: %Date{},
-                                                                                                      coupon: %Coupon{},
+                                                                                                      coupon: %Coupon{discount: %Discount{}, duration: %Duration{}},
                                                                                                       customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                                                                       plan: %Plan{},
                                                                                                       }]})
@@ -98,7 +98,7 @@ defmodule MoipEx.Subscription do
                                                           creation_date: %DateTime{},
                                                           expiration_date: %Date{},
                                                           next_invoice_date: %Date{},
-                                                          coupon: %Coupon{},
+                                                          coupon: %Coupon{discount: %Discount{}, duration: %Duration{}},
                                                           customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                           plan: %Plan{},
                                                           trial: %Trial{}
