@@ -53,7 +53,7 @@ defmodule MoipEx.Subscription do
                                                                                                       creation_date: %DateTime{},
                                                                                                       expiration_date: %Date{},
                                                                                                       coupon: %Coupon{discount: %Discount{}, duration: %Duration{}, creation_date: %DateTime{},
-                                                                                                      expiration_date: %Date{}}},
+                                                                                                      expiration_date: %Date{}},
                                                                                                       customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                                                                       plan: %Plan{},
                                                                                                       }]})
@@ -76,7 +76,7 @@ defmodule MoipEx.Subscription do
                                                                                                       creation_date: %DateTime{},
                                                                                                       expiration_date: %Date{},
                                                                                                       coupon: %Coupon{discount: %Discount{}, duration: %Duration{}, creation_date: %DateTime{},
-                                                                                                      expiration_date: %Date{}}},
+                                                                                                      expiration_date: %Date{}},
                                                                                                       customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                                                                       plan: %Plan{},
                                                                                                       }]})
@@ -101,7 +101,7 @@ defmodule MoipEx.Subscription do
                                                           expiration_date: %Date{},
                                                           next_invoice_date: %Date{},
                                                           coupon: %Coupon{discount: %Discount{}, duration: %Duration{}, creation_date: %DateTime{},
-                                                          expiration_date: %Date{}}},
+                                                          expiration_date: %Date{}},
                                                           customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                           plan: %Plan{},
                                                           trial: %Trial{}
