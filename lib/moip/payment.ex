@@ -1,14 +1,16 @@
 defmodule MoipEx.Payment do
-  alias MoipEx.{Payment,Payment.Status,Payment.Method, DateTime, CreditCard, Response, Error, Config, Request}
+  alias MoipEx.{Payment,Payment.Status,Payment.Method, DateTime, CreditCard, Response, Error, Config, Request, Link, Links, Invoice}
 
-  defstruct [id: nil, moip_id: nil, status: nil, payment_method: nil, creation_date: nil]
+  defstruct [id: nil, moip_id: nil, status: nil, payment_method: nil, creation_date: nil, _links: nil, invoice: nil]
 
   @type t :: %__MODULE__{
                         id: integer, #Identificador do pagamento no Moip Assinaturas.
                         moip_id: integer, #Identificador do pagamento no Moip Pagamentos.
                         status: Payment.Status.t,
                         payment_method: Payment.Method.t,
-                        creation_date: DateTime.t
+                        creation_date: DateTime.t,
+                        invoice: Invoice.t,
+                        _links: Links.t
                         }
 
 
@@ -19,7 +21,9 @@ defmodule MoipEx.Payment do
         {:ok, %{"payments" => payments}} = Poison.decode(response.body, as: %{"payments" => [%Payment{
                                                                                                     creation_date: %DateTime{},
                                                                                                     status: %Payment.Status{},
-                                                                                                    payment_method: %Payment.Method{credit_card: %CreditCard{}}
+                                                                                                    payment_method: %Payment.Method{credit_card: %CreditCard{}},
+                                                                                                    invoice: %Invoice{},
+                                                                                                    _links: %Links{boleto: %Link{}}
                                                                                                     }]})
         {:ok, payments}
       %HTTPoison.Response{status_code: 400} ->
@@ -39,7 +43,9 @@ defmodule MoipEx.Payment do
         {:ok, plan} = Poison.decode(response.body, as: %Payment{
                                                               creation_date: %DateTime{},
                                                               status: %Payment.Status{},
-                                                              payment_method: %Payment.Method{credit_card: %CreditCard{}}
+                                                              payment_method: %Payment.Method{credit_card: %CreditCard{}},
+                                                              invoice: %Invoice{},
+                                                              _links: %Links{boleto: %Link{}}
                                                               })
       %HTTPoison.Response{status_code: 400} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do

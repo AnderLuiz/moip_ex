@@ -1,9 +1,9 @@
 defmodule MoipEx.Subscription do
     alias MoipEx.{Customer, Plan, Subscription, Request, Response, Error, Config, BillingInfo, CreditCard, DateTime, Date,Invoice,
-                  Invoice.Status, SubscriptionResponse, Trial, Coupon, Discount, Duration}
+                  Invoice.Status, SubscriptionResponse, Trial, Coupon, Discount, Duration, Links, Link}
 
     defstruct [code: nil, amount: nil, payment_method: nil, plan: nil, customer: nil, creation_date: nil, status: nil,
-              next_invoice_date: nil, expiration_date: nil, trial: nil, coupon: nil]
+              next_invoice_date: nil, expiration_date: nil, trial: nil, coupon: nil, _links: nil]
 
     @enforce_keys [:code, :amount, :plan, :customer]
     @type t :: %__MODULE__{
@@ -17,7 +17,8 @@ defmodule MoipEx.Subscription do
                           next_invoice_date: Date.t,
                           expiration_date: Date.t,
                           trial: Trial.t,
-                          coupon: Coupon.t
+                          coupon: Coupon.t,
+                          _links: Links.t
                         }
 
     def create(subscription = %Subscription{}, new_customer \\ false) do
@@ -56,6 +57,7 @@ defmodule MoipEx.Subscription do
                                                                                                       expiration_date: %Date{}},
                                                                                                       customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                                                                       plan: %Plan{},
+                                                                                                      _links: %Links{boleto: %Link{}},
                                                                                                       }]})
           {:ok, subscriptions}
         %HTTPoison.Response{status_code: 400} ->
@@ -79,6 +81,7 @@ defmodule MoipEx.Subscription do
                                                                                                       expiration_date: %Date{}},
                                                                                                       customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                                                                       plan: %Plan{},
+                                                                                                      _links: %Links{boleto: %Link{} }
                                                                                                       }]})
 
           {:ok, Enum.filter(subscriptions, fn(subscription) -> subscription.customer.code == customer_code  end)}
@@ -104,7 +107,8 @@ defmodule MoipEx.Subscription do
                                                           expiration_date: %Date{}},
                                                           customer: %Customer{billing_info: %BillingInfo{credit_card: %CreditCard{}}},
                                                           plan: %Plan{},
-                                                          trial: %Trial{}
+                                                          trial: %Trial{},
+                                                          _links: %Links{boleto: %Link{} }
                                                           })
         %HTTPoison.Response{status_code: 400} ->
           case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
