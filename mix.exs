@@ -1,13 +1,18 @@
 defmodule MoipEx.Mixfile do
   use Mix.Project
 
+
+  @version "0.2.7"
+  @github "https://github.com/AnderLuiz/moip_ex"
+
   def project do
     [app: :moip_ex,
-     version: "0.2.6",
+     version: @version,
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     source_url: "https://github.com/AnderLuiz/moip_ex",
+     source_url: @github,
+     docs: docs(),
      package: package(),
      description: description(),
      deps: deps()]
@@ -22,6 +27,18 @@ defmodule MoipEx.Mixfile do
     Lib para lidar com o Moip pagamentos (https://www.moip.com.br/).
     """
   end
+
+  defp docs do
+  [
+    main: "readme",
+    source_ref: "v#{@version}",
+    source_url: @github,
+    extras: [
+      "README.md"
+    ]
+  ]
+end
+
 
   defp package do
     # These are the default files included in the package

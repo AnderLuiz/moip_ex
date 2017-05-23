@@ -1,6 +1,11 @@
 defmodule MoipEx.Example do
   alias MoipEx.{Plan, Subscription,Trial,Interval, Customer,Address,BillingInfo,CreditCard, Preference, Notification, Email, Email.Config, Coupon, Duration, Discount, Date}
 
+  @moduledoc """
+    Modulo de exemplos. Retorna exemplos de planos, assinaturas, cupons, clientes, entre outros.
+  """
+
+
   def plan(code) do
     %Plan{
       code: code,
