@@ -27,7 +27,7 @@ defmodule MoipEx.Request do
                       path,
                       body,
                       headers,
-                      timeout: :infinity, recv_timeout: :infinity)
+                      timeout: 50000, recv_timeout: 50000)
   end
 
 end

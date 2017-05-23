@@ -22,104 +22,94 @@ defmodule MoipEx.Customer do
                       }
 
   def create(customer = %Customer{}, new_vault \\ true) do
-    {:ok,response} = HTTPoison.request(:post,
-                      Config.assinaturas_url <> "/customers?new_vault=#{new_vault}",
-                      Request.to_request_string(customer),
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
-    case response do
-      %HTTPoison.Response{status_code: 201} ->
+    {status,response} = Request.request(:post, Config.assinaturas_url <> "/customers?new_vault=#{new_vault}",Request.to_request_string(customer) )
+    case {status,response} do
+      {:ok, %HTTPoison.Response{status_code: 201}} ->
         {:ok, moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-      %HTTPoison.Response{status_code: 400} ->
+      {:ok, %HTTPoison.Response{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      %HTTPoison.Response{status_code: 401} ->
+      {:ok, %HTTPoison.Response{status_code: 401}} ->
         {:error,:authentication_error}
+      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:error, error} -> {:error, error}
     end
   end
 
   def list do
-    {:ok,response} = HTTPoison.request(:get,
-                      Config.assinaturas_url <> "/customers",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
-    case response do
-      %HTTPoison.Response{status_code: 200} ->
+    {status,response} = Request.request(:get, Config.assinaturas_url <> "/customers")
+    case {status,response} do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
         {:ok, %{"customers" => plans}} = Poison.decode(response.body, as: %{"customers" => [%Customer{address: %Address{}, billing_info: %BillingInfo{credit_cards: [%CreditCard{}]}}]})
         {:ok, plans}
-      %HTTPoison.Response{status_code: 400} ->
+      {:ok, %HTTPoison.Response{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      %HTTPoison.Response{status_code: 401} ->
+      {:ok, %HTTPoison.Response{status_code: 401}} ->
         {:error,:authentication_error}
+      {:ok,%HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:error, error} -> {:error, error}
     end
   end
 
   def get(customer_code) do
-    {:ok,response} = HTTPoison.request(:get,
-                      Config.assinaturas_url <> "/customers/#{customer_code}",
-                      "",
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
-    case response do
-      %HTTPoison.Response{status_code: 200} ->
-        {:ok, plan} = Poison.decode(response.body, as: %Customer{address: %Address{}, billing_info: %BillingInfo{credit_cards: [%CreditCard{}]}})
-      %HTTPoison.Response{status_code: 400} ->
+    {status,response} = Request.request(:get, Config.assinaturas_url <> "/customers/#{customer_code}")
+    case {status,response} do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
+        {:ok, _customer} = Poison.decode(response.body, as: %Customer{address: %Address{}, billing_info: %BillingInfo{credit_cards: [%CreditCard{}]}})
+      {:ok, %HTTPoison.Response{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      %HTTPoison.Response{status_code: 401} ->
+      {:ok, %HTTPoison.Response{status_code: 401}} ->
         {:error,:authentication_error}
-      %HTTPoison.Response{status_code: 404} ->
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error,:not_found}
+      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:error, error} -> {:error, error}
     end
   end
 
   def change(customer = %Customer{}) do
-    {:ok,response} = HTTPoison.request(:put,
-                      Config.assinaturas_url <> "/customers/#{customer.code}",
-                      Request.to_request_string(customer),
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
-    case response do
-      %HTTPoison.Response{status_code: 200} ->
+    {status,response} = Request.request(:put, Config.assinaturas_url <> "/customers/#{customer.code}",Request.to_request_string(customer))
+    case {status,response} do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
         :ok
-      %HTTPoison.Response{status_code: 400} ->
+      {:ok, %HTTPoison.Response{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      %HTTPoison.Response{status_code: 401} ->
+      {:ok, %HTTPoison.Response{status_code: 401}} ->
         {:error,:authentication_error}
-      %HTTPoison.Response{status_code: 404} ->
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error,:not_found}
+      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:error, error} -> {:error, error}
     end
   end
 
   def change_credit_card(customer_code, billing_info = %BillingInfo{}) do
-    {:ok,response} = HTTPoison.request(:put,
-                      Config.assinaturas_url <> "/customers/#{customer_code}/billing_infos",
-                      Request.to_request_string(billing_info),
-                      Request.headers,
-                      timeout: :infinity, recv_timeout: :infinity)
-    case response do
-      %HTTPoison.Response{status_code: 200} ->
+    {status,response} = Request.request(:put, Config.assinaturas_url <> "/customers/#{customer_code}/billing_infos",Request.to_request_string(billing_info))
+    case {status,response} do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
         :ok
-      %HTTPoison.Response{status_code: 400} ->
+      {:ok, %HTTPoison.Response{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      %HTTPoison.Response{status_code: 401} ->
+      {:ok, %HTTPoison.Response{status_code: 401}} ->
         {:error,:authentication_error}
-      %HTTPoison.Response{status_code: 404} ->
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error,:not_found}
+      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:error, error} -> {:error, error}
     end
   end
 end
