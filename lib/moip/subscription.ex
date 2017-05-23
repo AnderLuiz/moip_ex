@@ -2,8 +2,27 @@ defmodule MoipEx.Subscription do
     alias MoipEx.{Customer, Plan, Subscription, Request, Response, Error, Config, BillingInfo, CreditCard, DateTime, Date,Invoice,
                   Invoice.Status, SubscriptionResponse, Trial, Coupon, Discount, Duration, Links, Link}
 
+    @moduledoc """
+      Representação de uma assinatura
+    """
+
+    @doc """
+    * :code - Identificador da assinatura na sua aplicação. Até 65 caracteres.
+    * :amount - Valor da assinatura (sobrescreve o valor do plano contratado) atenção: o cliente deve estar ciente e de acordo em ser cobrado um valor diferente do plano escolhido
+    * :plan - Dados do plano da assinatura
+    * :customer - Dados do assinante
+    * :payment_method - Método de pagamento. Pode ser CREDIT_CARD ou BOLETO
+    * :creation_date - Data de criação da assinatura
+    * :next_invoice_date - Data da proxima fatura
+    * :status - Status da assinatura. Pode ser Active, suspended, expired,overdue, canceled ou trial
+    * :trial - Dados do trial
+    * :coupon - Dados do cupon utilizado na assinatura
+    * :_links - Links relacionados. Ex: Link para boleto
+
+    """
     defstruct [code: nil, amount: nil, payment_method: nil, plan: nil, customer: nil, creation_date: nil, status: nil,
               next_invoice_date: nil, expiration_date: nil, trial: nil, coupon: nil, _links: nil]
+
 
     @enforce_keys [:code, :amount, :plan, :customer]
     @type t :: %__MODULE__{

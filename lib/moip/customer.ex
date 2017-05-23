@@ -1,6 +1,24 @@
 defmodule MoipEx.Customer do
   alias MoipEx.{Config, Request,Customer, Address, BillingInfo, CreditCard, Address, Response, Error}
 
+  @moduledoc """
+    Representação de um cliente
+  """
+
+  @doc """
+
+  * :code - Identificador do cliente na sua aplicação. Até 65 caracteres
+  * :fullname - Nome completo do cliente. Até 150 caracteres
+  * :email - Email do cliente
+  * :cpf - CPF do cliente
+  * :phone_area_code - Código de área do telefone do titular (DDD). 2 carateres
+  * :phone_number - Telefone do titular, 8 ou 9 caracteres somente números.
+  * :birthdate_day - Dia do nascimento. Válido 1 a 31
+  * :birthdate_month - Mês do nascimento. Válido 1 a 12
+  * :birthdate_year - Ano do nascimento. 4 dígitos
+  * :address - Dados do endereço do cliente
+  * :billing_info - Dados do cobrança do cliente
+  """
   defstruct [code: nil, email: nil, fullname: nil, cpf: nil, phone_area_code: nil,
             phone_number: nil, birthdate_day: nil, birthdate_month: nil,
             birthdate_year: nil, address: nil, billing_info: nil]

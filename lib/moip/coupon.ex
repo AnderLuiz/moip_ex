@@ -1,4 +1,20 @@
 defmodule MoipEx.Coupon do
+  @moduledoc """
+    Representação de um cupom de desconto
+  """
+
+  @doc """
+
+  * :code - Código do identificador do coupon.
+  * :name - Nome do cupom
+  * :description - Descrição do cupom
+  * :discount - Desconto dado ao cupom
+  * :status - Status do cupom, 'active' ou 'inactive'
+  * :max_redemptions - Número máximo de submits do coupon até que ele seja inativado automaticamente
+  * :expiration_date - Data de inativação do coupon, quando ele não poderá mais ser associado a novas assinaturas
+  * :creation_date - Data e hora de criação do cupom
+  * :in_use - Informa se o coupon está ou não aplicando suas regras em alguma assinatura.
+  """
   defstruct [code: nil, name: nil, description: nil, discount: nil, duration: nil, status: nil, max_redemptions: nil, expiration_date: nil, creation_date: nil, in_use: nil]
   alias MoipEx.{Coupon,Discount, Duration, Date, DateTime, Request, Error, Response, Config}
 

@@ -1,6 +1,19 @@
 defmodule MoipEx.Payment do
   alias MoipEx.{Payment,Payment.Status,Payment.Method, DateTime, CreditCard, Response, Error, Config, Request, Link, Links, Invoice}
 
+  @moduledoc """
+    Representação de um pagamento
+  """
+
+  @doc """
+  * :id - Identificador do pagamento
+  * :moip_id - Identificador do pagamento no Moip Pagamentos
+  * :status - Status do pagamento
+  * :payment_method - Método de pagamento
+  * :creation_date - Data e hora da criação da cobrança
+  * :_links - Links relacionados ao pagamento, Ex: link para boleto
+  * :invoice - Fatura relacionada ao pagamento
+  """
   defstruct [id: nil, moip_id: nil, status: nil, payment_method: nil, creation_date: nil, _links: nil, invoice: nil]
 
   @type t :: %__MODULE__{

@@ -1,11 +1,14 @@
 defmodule MoipEx.Discount do
-
   @moduledoc """
-    Desconto de um cupom
-    Type: pode ser percent/amount
-
+    Desconto dado a uma assinatura
   """
 
+  @doc """
+
+  * :type - Tipo do desconto, pode ser percent ou amount
+  * :value - Valor do desconto em porcentagem(%) ou R$
+
+  """
   defstruct [value: nil, type: nil]
 
   @type t :: %__MODULE__{

@@ -1,12 +1,15 @@
 defmodule MoipEx.Duration do
 
   @moduledoc """
-    Duração de um cupom
-    Type: pode ser once/repeating/forever
-    Occurences: Representa o número de ocorrências que receberão o desconto. Válido apenas quando o type for repeating.
-
+    Representação de tempo de duração de um cupom
   """
 
+  @doc """
+
+  * :type - Determina se um coupon será válido apenas em uma cobrança, ou em um número específico diferente de 1 ou em todas. Pode ser once/repeating/forever
+  * :occurrences -   * :occurrences - Determina se um coupon será válido apenas em uma cobrança, ou em um número específico diferente de 1 ou em todas. Pode ser percent/amount
+
+  """
   defstruct [type: nil, occurrences: nil]
 
   @type t :: %__MODULE__{

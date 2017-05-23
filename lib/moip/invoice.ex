@@ -1,6 +1,25 @@
 defmodule MoipEx.Invoice do
   alias MoipEx.{Config,Subscription,Plan,Customer,Invoice.Status, Request, Response, Error, Invoice, DateTime,Invoice.Item, Links, Link, Coupon, Discount}
 
+  @moduledoc """
+    Representação de uma fatura
+  """
+
+  @doc """
+  * :id - Identificador da fatura
+  * :amount - Valor total cobrado do cliente, em centavos
+  * :status - Status da fatura
+  * :creation_date - Data de criação da fatura
+  * :due_date - Vencimento do boleto, se aplicável
+  * :occurrence - Ocorrência da fatura na assinatura (ex. 3 para a terceira fatura)
+  * :subscription_code - Codigo da assinatura associada
+  * :customer - Assinante que deve pagar a fatura.
+  * :items - Itens da fatura.
+  * :plan - Plano a ser pago.
+  * :coupon - Cupon de desconto associado a fatura.
+  * :_links - Links relacionados a fatura. Ex: link para boleto.
+
+  """
   defstruct [amount: nil, status: nil, creation_date: nil, due_date: nil, id: nil, occurrence: nil, subscription_code: nil, customer: nil, items: nil, plan: nil,coupon: nil,_links: nil]
 
   @type t :: %__MODULE__{
