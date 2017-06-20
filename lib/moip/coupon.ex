@@ -89,8 +89,8 @@ defmodule MoipEx.Coupon do
     end
   end
 
-  def get_by_subscription(subscription) do
-    case MoipEx.Subscription.get(subscription) do
+  def get_by_subscription(subscription_code) do
+    case MoipEx.Subscription.get(subscription_code) do
       {:ok, subscription} -> {:ok, subscription.coupon}
       {:error, response} -> {:error, response}
     end
