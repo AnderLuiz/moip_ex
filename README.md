@@ -31,6 +31,8 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 
 ## Planos
 
+Veja documentação do módulo `MoipEx.Plan` para mais detalhes
+
 ### Listar planos
 ```elixir
   MoipEx.Plan.list()
@@ -61,6 +63,8 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 ```
 
 ## Clientes
+
+Veja documentação do módulo `MoipEx.Customer` para mais detalhes
 
 ### Criar cliente
 
@@ -93,6 +97,8 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 ```
 
 ## Assinaturas
+
+Veja documentação do módulo `MoipEx.Subscription` para mais detalhes
 
 ### Criar assinatura
 
@@ -144,6 +150,8 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 
 ## Cupons
 
+Veja documentação do módulo `MoipEx.Coupon` para mais detalhes
+
 ### Criar cupom
 
 ```elixir
@@ -181,6 +189,9 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 
 ## Faturas
 
+Veja documentação do módulo `MoipEx.Invoice` para mais detalhes
+
+
 ### Listar por assinatura
 
 ```elixir
@@ -203,6 +214,9 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 
 
 ## Pagamentos
+
+Veja documentação do módulo `MoipEx.Payment` para mais detalhes
+
 
 ### Listar por fatura
 
