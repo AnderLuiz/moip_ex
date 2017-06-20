@@ -60,18 +60,160 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
   MoipEx.Plan.change(MoipEx.Example.plan("PLAN_CODE"))
 ```
 
+## Clientes
+
+### Criar cliente
+
+```elixir
+  MoipEx.Customer.create(MoipEx.Example.customer())
+```
+
+### Listar clientes
+
+```elixir
+  MoipEx.Customer.list()
+```
+
+### Obter cliente
+
+```elixir
+  customer = MoipEx.Customer.get("CUSTOMER_CODE")
+```
+
+### Alterar cliente
+
+```elixir
+  MoipEx.Customer.change(customer)
+```
+
+### Alterar cartao de credito
+
+```elixir
+  MoipEx.Customer.change_credit_card("CUSTOMER_CODE", MoipEx.Example.billing_info)
+```
+
 ## Assinaturas
 
-TODO
+### Criar assinatura
+
+```elixir
+  new_customer = false # or true
+  MoipEx.Subscription.create(MoipEx.Example.subscription(plan), new_customer)
+```
+
+### Listar assinaturas
+
+```elixir
+  MoipEx.Subscription.list()
+```
+### Listar assinaturas por cliente
+
+```elixir
+  MoipEx.Subscription.list_by_customer("CUSTOMER_CODE")
+```
+
+### Obter  assinatura
+
+```elixir
+  MoipEx.Subscription.get("SUBSCRIPTION_CODE")
+```
+
+### Ativar assinatura
+
+```elixir
+  MoipEx.Subscription.activate("SUBSCRIPTION_CODE")
+```
+
+### Suspender assinatura
+
+```elixir
+  MoipEx.Subscription.suspend("SUBSCRIPTION_CODE")
+```
+
+### Cancelar assinatura
+
+```elixir
+  MoipEx.Subscription.cancel("SUBSCRIPTION_CODE")
+```
+
+### Cancelar todas assinaturas de um cliente
+
+```elixir
+  MoipEx.Subscription.cancel_all_by_customer("CUSTOMER_CODE")
+```
 
 ## Cupons
 
-TODO
+### Criar cupom
+
+```elixir
+  MoipEx.Coupon.create(MoipEx.Example.coupon())
+```
+
+### Listar cupons
+
+```elixir
+  MoipEx.Coupon.list()
+```
+
+### Obter cupom
+
+```elixir
+  MoipEx.Coupon.get("COUPON_CODE")
+```
+### Obter cupom de uma assinatura
+
+```elixir
+  MoipEx.Coupon.get_by_subscription("SUBSCRIPTION_CODE")
+```
+
+### Ativar um cupom
+
+```elixir
+  MoipEx.Coupon.activate("COUPON_CODE")
+```
+
+### Desativar um cupom
+```elixir
+  MoipEx.Coupon.inactivate("COUPON_CODE")
+```
+
 
 ## Faturas
 
-TODO
+### Listar por assinatura
+
+```elixir
+  MoipEx.Invoice.list_by_subscription("SUBSCRIPTION_CODE")
+```
+
+### Obter fatura
+
+```elixir
+  invoice_id = 333333
+  MoipEx.Invoice.get(invoice_id)
+```
+
+### Retentativa de cobrança
+
+```elixir
+  invoice_id = 3333333
+  MoipEx.Invoice.retry(invoice_id)
+```
+
 
 ## Pagamentos
 
-TODO
+### Listar por fatura
+
+```elixir
+  invoice_id = 3333333
+  MoipEx.Payment.list_by_invoice(invoice_id)
+```
+
+### Obter pagamento
+
+```elixir
+  payment_id = 1111111
+  MoipEx.Payment.get(payment_id)
+```
