@@ -21,7 +21,7 @@ config :moip_ex,
 
 ```elixir
 def deps do
-  [{:moip_ex, "~> 0.2.7"}]
+  [{:moip_ex, "~> 0.2.8"}]
 end
 ```
 

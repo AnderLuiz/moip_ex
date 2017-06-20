@@ -2,7 +2,7 @@ defmodule MoipEx.Mixfile do
   use Mix.Project
 
 
-  @version "0.2.7"
+  @version "0.2.8"
   @github "https://github.com/AnderLuiz/moip_ex"
 
   def project do
