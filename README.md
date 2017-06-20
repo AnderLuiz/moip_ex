@@ -7,7 +7,7 @@ Lib para lidar com o moip pagamentos. Até o momento somente com o Moip Assinatu
 Para usar o moip_ex no seu projeto:
 
 
-## 1. Config
+# 1. Config
 
 ```elixir
 config :moip_ex,
@@ -17,7 +17,7 @@ config :moip_ex,
 
 ```
 
-## 2. Mix
+# 2. Mix
 
 ```elixir
 def deps do
@@ -25,9 +25,10 @@ def deps do
 end
 ```
 
-# Uso
+# 3. Exemplos de uso
 
 Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter exemplos de planos, assinaturas, cupons, clientes, etc.
+
 
 ## Planos
 
@@ -81,7 +82,7 @@ Veja documentação do módulo `MoipEx.Customer` para mais detalhes
 ### Obter cliente
 
 ```elixir
-  customer = MoipEx.Customer.get("CUSTOMER_CODE")
+  MoipEx.Customer.get("CUSTOMER_CODE")
 ```
 
 ### Alterar cliente
@@ -231,3 +232,7 @@ Veja documentação do módulo `MoipEx.Payment` para mais detalhes
   payment_id = 1111111
   MoipEx.Payment.get(payment_id)
 ```
+
+## Notificações
+
+[Veja um exemplo de controller para lidar com as notificações MOIP em examples/notifications.md ](notificacoes.html)

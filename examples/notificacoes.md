@@ -1,3 +1,8 @@
+# Notificações
+
+## Exemplo de controller para receber notificações.
+Neste exemplo não está sendo verificado o header 'Authorization' enviado pelo moip. Isto pode ser feito através de um plug.
+
 ```elixir
 defmodule MyApp.MoipController do
   use MyApp.Web, :controller

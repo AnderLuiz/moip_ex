@@ -34,7 +34,8 @@ defmodule MoipEx.Mixfile do
     source_ref: "v#{@version}",
     source_url: @github,
     extras: [
-      "README.md"
+      "README.md",
+      "examples/notificacoes.md"
     ]
   ]
 end
