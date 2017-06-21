@@ -1,6 +1,6 @@
 # MoipEx
 
-Lib para lidar com o moip pagamentos. Até o momento somente com o Moip Assinaturas.
+Lib para lidar com o moip pagamentos. Até o momento somente com o Moip Assinaturas. https://dev.moip.com.br/v1.5/reference#introdução
 
 # Setup
 
@@ -13,7 +13,7 @@ Para usar o moip_ex no seu projeto:
 config :moip_ex,
   token: "TOKEN",
   api_key: "API_KEY",
-  env: :sandbox  #ou prod
+  env: :sandbox  #ou env: :prod
 
 ```
 
@@ -35,7 +35,7 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 #### Exemplo de plano
 
 ```elixir
-iex(1)> MoipEx.Example.plan
+iex(1)> MoipEx.Example.plan()
 %MoipEx.Plan{amount: 5440, billing_cycles: 8, code: "PLAN_CODE",
  description: "Descricao do plano", id: nil,
  interval: %MoipEx.Interval{length: 1, unit: "MONTH"}, max_qty: 500,
