@@ -32,7 +32,20 @@ Para os exemplos a seguir, utilizaremos o Módulo `MoipEx.Example` para obter ex
 
 ## Planos
 
-Veja documentação do módulo `MoipEx.Plan` para mais detalhes
+#### Exemplo de plano
+
+```elixir
+iex(1)> MoipEx.Example.plan
+%MoipEx.Plan{amount: 5440, billing_cycles: 8, code: "PLAN_CODE",
+ description: "Descricao do plano", id: nil,
+ interval: %MoipEx.Interval{length: 1, unit: "MONTH"}, max_qty: 500,
+ name: "Nome do plano", payment_method: "ALL", setup_fee: 55726,
+ status: "ACTIVE",
+ trial: %MoipEx.Trial{days: 30, enabled: false, end: nil, hold_setup_fee: true,
+  start: nil}}
+```
+Veja documentação do módulo `MoipEx.Plan` para mais detalhes.
+
 
 ### Listar planos
 ```elixir
@@ -65,7 +78,23 @@ Veja documentação do módulo `MoipEx.Plan` para mais detalhes
 
 ## Clientes
 
-Veja documentação do módulo `MoipEx.Customer` para mais detalhes
+#### Exemplo de cliente
+
+```elixir
+iex(1)> MoipEx.Example.customer()
+%MoipEx.Customer{address: %MoipEx.Address{city: "São Paulo",
+  complement: "Casa", country: "BRA", district: "Jardim Alemanha",
+  number: "332", state: "SP", street: "Rua Talbate", zipcode: "07343634"},
+ billing_info: %MoipEx.BillingInfo{credit_card: %MoipEx.CreditCard{brand: nil,
+   expiration_month: "04", expiration_year: "27", first_six_digits: nil,
+   holder_name: "João da Silva", last_four_digits: nil,
+   number: "4111111111117756", vault: nil}, credit_cards: nil},
+ birthdate_day: "12", birthdate_month: "06", birthdate_year: "1985",
+ code: "cliente-46855", cpf: "38330516555", email: "email@cliente.com.br",
+ fullname: "José Castro", phone_area_code: "11", phone_number: "123456789"}
+
+```
+Veja documentação do módulo `MoipEx.Customer` para mais detalhes.
 
 ### Criar cliente
 
@@ -99,7 +128,32 @@ Veja documentação do módulo `MoipEx.Customer` para mais detalhes
 
 ## Assinaturas
 
-Veja documentação do módulo `MoipEx.Subscription` para mais detalhes
+#### Exemplo de assinatura
+
+```elixir
+iex(1)> MoipEx.Example.subscription(plan)   
+%MoipEx.Subscription{_links: nil, amount: "1400", code: "subscription-code",
+ coupon: nil, creation_date: nil,
+ customer: %MoipEx.Customer{address: %MoipEx.Address{city: "São Paulo",
+   complement: "Casa", country: "BRA", district: "Jardim Alemanha",
+   number: "332", state: "SP", street: "Rua Talbate", zipcode: "07343634"},
+  billing_info: %MoipEx.BillingInfo{credit_card: %MoipEx.CreditCard{brand: nil,
+    expiration_month: "04", expiration_year: "27", first_six_digits: nil,
+    holder_name: "João da Silva", last_four_digits: nil,
+    number: "4111111111111247", vault: nil}, credit_cards: nil},
+  birthdate_day: "12", birthdate_month: "06", birthdate_year: "1985",
+  code: "cliente-code", cpf: "38330516555", email: "email@cliente.com.br",
+  fullname: "José Castro", phone_area_code: "11", phone_number: "123456789"},
+ expiration_date: nil, next_invoice_date: nil, payment_method: "CREDIT_CARD",
+ plan: %MoipEx.Plan{amount: 1400, billing_cycles: 0, code: "plan-code",
+  description: "descricao do plano", id: "PLA-CGTZFCA6DCVI",
+  interval: %MoipEx.Interval{length: 2, unit: "MONTH"}, max_qty: 0,
+  name: "testedffd", payment_method: "CREDIT_CARD", setup_fee: 0,
+  status: "INACTIVE",
+  trial: %MoipEx.Trial{days: 0, enabled: false, end: nil, hold_setup_fee: true,
+   start: nil}}, status: nil, trial: nil}
+```
+Veja documentação do módulo `MoipEx.Subscription` para mais detalhes.
 
 ### Criar assinatura
 
@@ -151,7 +205,18 @@ Veja documentação do módulo `MoipEx.Subscription` para mais detalhes
 
 ## Cupons
 
-Veja documentação do módulo `MoipEx.Coupon` para mais detalhes
+#### Exemplo de cupom
+
+```elixir
+iex(1)> MoipEx.Example.coupon()
+%MoipEx.Coupon{code: "coupon-abc", creation_date: nil,
+ description: "Novo cupom abc",
+ discount: %MoipEx.Discount{type: "percent", value: 1000},
+ duration: %MoipEx.Duration{occurrences: 12, type: "repeating"},
+ expiration_date: %MoipEx.Date{day: 26, month: 12, year: 2030}, in_use: nil,
+ max_redemptions: 1000, name: "coupon abc", status: "active"}
+```
+Veja documentação do módulo `MoipEx.Coupon` para mais detalhes.
 
 ### Criar cupom
 
