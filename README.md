@@ -1,5 +1,9 @@
 # MoipEx
 
+[![Hex.pm](https://img.shields.io/hexpm/v/moip_ex.svg?style=plastic)](https://hex.pm/packages/moip_ex)
+[![Hex.pm](https://img.shields.io/hexpm/dt/moip_ex.svg?style=plastic)](https://hex.pm/packages/moip_ex)
+[![Travis](https://img.shields.io/travis/AnderLuiz/moip_ex.svg?style=plastic)](https://travis-ci.org/AnderLuiz/moip_ex)
+
 Lib para lidar com o moip pagamentos. Até o momento somente com o Moip Assinaturas. https://dev.moip.com.br/v1.5/reference#introdução
 
 # Setup
@@ -21,7 +25,7 @@ config :moip_ex,
 
 ```elixir
 def deps do
-  [{:moip_ex, "~> 0.2.9"}]
+  [{:moip_ex, "~> 0.3.0"}]
 end
 ```
 
