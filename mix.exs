@@ -1,7 +1,6 @@
 defmodule MoipEx.Mixfile do
   use Mix.Project
 
-
   @version "0.3.0"
   @github "https://github.com/AnderLuiz/moip_ex"
 
@@ -38,8 +37,7 @@ defmodule MoipEx.Mixfile do
       "examples/notificacoes.md"
     ]
   ]
-end
-
+  end
 
   defp package do
     # These are the default files included in the package
