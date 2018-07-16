@@ -56,6 +56,7 @@ end
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: [:dev]},
+      {:mock, "~> 0.3.0", only: [:test]},
       {:httpoison, "~> 0.9.0"},
       {:poison, "~> 2.0 or ~> 3.0"},
     ]
