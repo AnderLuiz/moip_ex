@@ -1,3 +1,0 @@
-defmodule MoipEx do
-
-end

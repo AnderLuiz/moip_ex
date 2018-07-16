@@ -1,9 +1,8 @@
 defmodule MoipEx.Invoice do
-  alias MoipEx.{Config,Subscription,Plan,Customer,Invoice.Status, Request, Response, Error, Invoice, DateTime,Invoice.Item, Links, Link, Coupon, Discount}
-
   @moduledoc """
     Representação de uma fatura
   """
+  alias MoipEx.{Config,Subscription,Plan,Customer,Invoice.Status, Request, Response, Error, Invoice, DateTime,Invoice.Item, Links, Link, Coupon, Discount}
 
   @doc """
   * :id - Identificador da fatura

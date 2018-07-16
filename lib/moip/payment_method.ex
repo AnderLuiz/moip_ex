@@ -1,9 +1,9 @@
 defmodule MoipEx.Payment.Method do
-  alias MoipEx.{CreditCard}
-
   @moduledoc """
     Representação de um método de pagamento
   """
+
+  alias MoipEx.{CreditCard}
 
   @doc """
   * :code - Código identificador do método

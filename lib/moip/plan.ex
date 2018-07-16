@@ -1,9 +1,9 @@
 defmodule MoipEx.Plan do
-  alias MoipEx.{Config,Request,Response,Error,Plan,Interval,Trial}
-
   @moduledoc """
     Representação de um plano
   """
+
+  alias MoipEx.{Config,Request,Response,Error,Plan,Interval,Trial}
 
   @doc """
   * :code - Identificador do plano na sua aplicação. Até 65 caracteres
@@ -19,7 +19,6 @@ defmodule MoipEx.Plan do
   * :id - Identificador do plano moip
 
   """
-
   defstruct [code: nil,
             name: nil,
             description: nil,

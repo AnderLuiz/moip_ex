@@ -1,9 +1,9 @@
 defmodule MoipEx.BillingInfo do
-  alias MoipEx.{CreditCard}
-
   @moduledoc """
     Representação de informações de cobrança
   """
+  
+  alias MoipEx.{CreditCard}
 
   @doc """
 

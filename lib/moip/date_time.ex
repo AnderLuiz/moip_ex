@@ -11,7 +11,6 @@ defmodule MoipEx.DateTime do
   * :hour - Horas no formato HH (24hs)
   * :minute - Minutos no formato mm
   * :second - Segundos no formato ss
-
   """
   defstruct [year: nil, month: nil, day: nil, hour: nil, minute: nil, second: nil]
 

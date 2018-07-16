@@ -7,7 +7,6 @@ defmodule MoipEx.Interval do
 
   * :unit - A unidade de medida do intervalo de cobrança, o default é MONTH. Opções: DAY, MONTH, YEAR condicional
   * :length - A duração do intervalo de cobrança, default é 1 condicional
-
   """
   defstruct unit: nil,
             length: nil

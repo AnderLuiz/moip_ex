@@ -1,5 +1,4 @@
 defmodule MoipEx.Link do
-
   @moduledoc """
     Representação de um link
   """
@@ -8,7 +7,6 @@ defmodule MoipEx.Link do
   * :redirect_href - Caminho do link (Ex: http://....com)
 
   """
-
   defstruct redirect_href: nil
 
 

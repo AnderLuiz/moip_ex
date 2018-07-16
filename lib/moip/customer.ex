@@ -1,9 +1,8 @@
 defmodule MoipEx.Customer do
-  alias MoipEx.{Config, Request,Customer, Address, BillingInfo, CreditCard, Address, Response, Error}
-
   @moduledoc """
     Representação de um cliente
   """
+  alias MoipEx.{Config, Request,Customer, Address, BillingInfo, CreditCard, Address, Response, Error}
 
   @doc """
 

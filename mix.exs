@@ -53,7 +53,9 @@ end
 
   def deps do
     [
-      {:ex_doc, "~> 0.13", only: :dev},
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: [:dev]},
       {:httpoison, "~> 0.9.0"},
       {:poison, "~> 2.0 or ~> 3.0"},
     ]

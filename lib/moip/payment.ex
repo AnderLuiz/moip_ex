@@ -1,9 +1,9 @@
 defmodule MoipEx.Payment do
-  alias MoipEx.{Payment,Payment.Status,Payment.Method, DateTime, CreditCard, Response, Error, Config, Request, Link, Links, Invoice}
-
   @moduledoc """
     Representação de um pagamento
   """
+  
+  alias MoipEx.{Payment,Payment.Status,Payment.Method, DateTime, CreditCard, Response, Error, Config, Request, Link, Links, Invoice}
 
   @doc """
   * :id - Identificador do pagamento

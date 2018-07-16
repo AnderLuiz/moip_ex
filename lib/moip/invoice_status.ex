@@ -1,5 +1,4 @@
 defmodule MoipEx.Invoice.Status do
-
   @moduledoc """
     Status de uma fatura
   """

@@ -9,7 +9,6 @@ defmodule MoipEx.Invoice.Item do
   * :type - Descrição do item (ex. "Valor da assinatura", "Taxa de contratação", "Período de Trial", etc.)
 
   """
-
   defstruct [amount: nil,
             type: nil]
 

@@ -9,10 +9,9 @@ defmodule MoipEx.Request do
     ]
   end
 
-
   def to_request_string(struct, exclude_nil \\ true) do
     {:ok, request_string} = Poison.encode(struct)
-    if(exclude_nil == true) do
+    if exclude_nil == true do
       removed_null = Regex.replace(~r/\"([^\"]+)\":null(,?)/, request_string, "")
       Regex.replace(~r/,}/, removed_null, "}")
     else
@@ -20,14 +19,12 @@ defmodule MoipEx.Request do
     end
   end
 
-
-
   def request(method, path, body \\ "", headers \\ headers ) do
     HTTPoison.request(method,
                       path,
                       body,
                       headers,
-                      timeout: 50000, recv_timeout: 50000)
+                      timeout: 50_000, recv_timeout: 50_000)
   end
 
 end
