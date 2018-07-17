@@ -44,7 +44,7 @@ defmodule MoipEx.Invoice do
   def list_by_subscription(subscription_code) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/invoices")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, %{"invoices" => invoices}} = Poison.decode(response.body, as: %{"invoices" => [%Invoice{
                                                                                                     creation_date: %DateTime{},
                                                                                                     due_date: %DateTime{},
@@ -56,14 +56,14 @@ defmodule MoipEx.Invoice do
                                                                                                     _links: %Links{boleto: %Link{}}
                                                                                                     }]})
         {:ok, invoices}
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -71,7 +71,7 @@ defmodule MoipEx.Invoice do
   def get(invoice_id) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/invoices/#{invoice_id}")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, plan} = Poison.decode(response.body, as: %Invoice{
                                                           creation_date: %DateTime{},
                                                           due_date: %DateTime{},
@@ -82,16 +82,16 @@ defmodule MoipEx.Invoice do
                                                           items: [%Invoice.Item{}],
                                                           _links: %Links{boleto: %Link{}}
                                                         })
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -99,16 +99,16 @@ defmodule MoipEx.Invoice do
   def retry(invoice_id) do
     {status,response} = Request.request(:post, Config.assinaturas_url <> "/invoices/#{invoice_id}/retry")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end

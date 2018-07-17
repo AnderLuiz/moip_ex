@@ -44,7 +44,7 @@ defmodule MoipEx.Subscription do
   def create(subscription = %Subscription{}, new_customer \\ false) do
     {status,response} = Request.request(:post, Config.assinaturas_url <> "/subscriptions?new_customer=#{new_customer}", Request.to_request_string(subscription))
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 201}} ->
+      {:ok, %{status_code: 201}} ->
         {:ok, moip_response} = Poison.decode(response.body, as: %SubscriptionResponse{
                                                 errors: [%Error{}],
                                                 alerts: [%Error{}],
@@ -56,14 +56,14 @@ defmodule MoipEx.Subscription do
                                                 plan: %Plan{}
                                               }
                                             )
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
       {:ok,%HTTPoison.Response{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -71,7 +71,7 @@ defmodule MoipEx.Subscription do
   def list do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, %{"subscriptions" => subscriptions}} = Poison.decode(response.body, as: %{"subscriptions" => [%Subscription{
                                                                                                     creation_date: %DateTime{},
                                                                                                     expiration_date: %Date{},
@@ -82,14 +82,14 @@ defmodule MoipEx.Subscription do
                                                                                                     _links: %Links{boleto: %Link{}},
                                                                                                     }]})
         {:ok, subscriptions}
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -97,7 +97,7 @@ defmodule MoipEx.Subscription do
   def list_by_customer(customer_code) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, %{"subscriptions" => subscriptions}} = Poison.decode(response.body, as: %{"subscriptions" => [%Subscription{
                                                                                                     creation_date: %DateTime{},
                                                                                                     expiration_date: %Date{},
@@ -108,14 +108,14 @@ defmodule MoipEx.Subscription do
                                                                                                     _links: %Links{boleto: %Link{} }
                                                                                                     }]})
         {:ok, Enum.filter(subscriptions, fn(subscription) -> subscription.customer.code == customer_code  end)}
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -123,7 +123,7 @@ defmodule MoipEx.Subscription do
   def get(subscription_code) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/subscriptions/#{subscription_code}")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, _subscription} = Poison.decode(response.body, as: %Subscription{
                                                         creation_date: %DateTime{},
                                                         expiration_date: %Date{},
@@ -135,16 +135,16 @@ defmodule MoipEx.Subscription do
                                                         trial: %Trial{},
                                                         _links: %Links{boleto: %Link{} }
                                                         })
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -152,18 +152,18 @@ defmodule MoipEx.Subscription do
   def suspend(subscription_code) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/suspend")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
       {:ok,%HTTPoison.Response{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -171,18 +171,18 @@ defmodule MoipEx.Subscription do
   def activate(subscription_code) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/activate")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -190,18 +190,18 @@ defmodule MoipEx.Subscription do
   def cancel(subscription_code) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/cancel")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404} }->
+      {:ok, %{status_code: 404} }->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -223,18 +223,18 @@ defmodule MoipEx.Subscription do
   def change(subscription = %Subscription{}) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription.code}",Request.to_request_string(subscription) )
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -243,18 +243,18 @@ defmodule MoipEx.Subscription do
     request_body = %{coupon: %{code:  coupon_code}}
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}",Request.to_request_string(request_body) )
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error, :not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -263,18 +263,18 @@ defmodule MoipEx.Subscription do
     request_body = %{coupon: %{code:  coupon_code}, plan: %{code:  plan_code}}
     {status, response} = Request.request(:put, Config.assinaturas_url <> "/subscriptions/#{subscription_code}",Request.to_request_string(request_body) )
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error, :authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error, :not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -282,18 +282,18 @@ defmodule MoipEx.Subscription do
   def delete_coupon(subscription_code) do
     {status,response} = Request.request(:delete, Config.assinaturas_url <> "/subscriptions/#{subscription_code}/coupon")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end

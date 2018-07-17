@@ -30,7 +30,7 @@ defmodule MoipEx.Payment do
   def list_by_invoice(invoice_id) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/invoices/#{invoice_id}/payments")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, %{"payments" => payments}} = Poison.decode(response.body, as: %{"payments" => [%Payment{
                                                                                                     creation_date: %DateTime{},
                                                                                                     status: %Payment.Status{},
@@ -39,14 +39,14 @@ defmodule MoipEx.Payment do
                                                                                                     _links: %Links{boleto: %Link{}}
                                                                                                     }]})
         {:ok, payments}
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -54,7 +54,7 @@ defmodule MoipEx.Payment do
   def get(payment_id) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/payments/#{payment_id}")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, _payment} = Poison.decode(response.body, as: %Payment{
                                                               creation_date: %DateTime{},
                                                               status: %Payment.Status{},
@@ -62,16 +62,16 @@ defmodule MoipEx.Payment do
                                                               invoice: %Invoice{},
                                                               _links: %Links{boleto: %Link{}}
                                                               })
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end

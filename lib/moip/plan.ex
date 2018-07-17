@@ -49,16 +49,16 @@ defmodule MoipEx.Plan do
   def create(plan = %Plan{}) do
     {status,response} =  Request.request(:post, Config.assinaturas_url <> "/plans", Request.to_request_string(plan))
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 201}} ->
+      {:ok, %{status_code: 201}} ->
         {:ok, _moip_response} = Poison.decode(response.body, as: %Response{errors: [%Error{}]})
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -66,17 +66,17 @@ defmodule MoipEx.Plan do
   def list do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/plans")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, %{"plans" => plans}} = Poison.decode(response.body, as: %{"plans" => [%Plan{trial: %Trial{}, interval: %Interval{}}]})
         {:ok, plans}
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -84,18 +84,18 @@ defmodule MoipEx.Plan do
   def get(plan_code) do
     {status,response} = Request.request(:get, Config.assinaturas_url <> "/plans/#{plan_code}")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         {:ok, _plan} = Poison.decode(response.body, as: %Plan{trial: %Trial{}, interval: %Interval{}})
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -103,18 +103,18 @@ defmodule MoipEx.Plan do
   def activate(plan_code) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/plans/#{plan_code}/activate")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -122,18 +122,18 @@ defmodule MoipEx.Plan do
   def inactivate(plan_code) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/plans/#{plan_code}/inactivate")
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
@@ -141,18 +141,18 @@ defmodule MoipEx.Plan do
   def change(plan = %Plan{}) do
     {status,response} = Request.request(:put, Config.assinaturas_url <> "/plans/#{plan.code}", Request.to_request_string(plan))
     case {status,response} do
-      {:ok, %HTTPoison.Response{status_code: 200}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %{status_code: 400}} ->
         case Poison.decode(response.body, as: %Response{errors: [%Error{}]}) do
           {:ok, moip_response} -> {:error, moip_response}
           _ -> {:error, %Response{errors: [%Error{}]}}
         end
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %{status_code: 401}} ->
         {:error,:authentication_error}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %{status_code: 404}} ->
         {:error,:not_found}
-      {:ok, %HTTPoison.Response{status_code: status_code}} -> {:error, status_code}
+      {:ok, %{status_code: status_code}} -> {:error, status_code}
       {:error, error} -> {:error, error}
     end
   end
