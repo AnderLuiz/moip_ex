@@ -8,6 +8,7 @@ defmodule MoipEx.Mixfile do
     [app: :moip_ex,
      version: @version,
      elixir: "~> 1.4",
+     elixirc_paths: elixirc_paths(Mix.env),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      source_url: @github,
@@ -18,7 +19,7 @@ defmodule MoipEx.Mixfile do
   end
 
   def application do
-    [extra_applications: [:logger]]
+    [extra_applications: [:logger, :httpoison]]
   end
 
   defp description do
@@ -59,4 +60,8 @@ defmodule MoipEx.Mixfile do
       {:poison, "~> 2.0 or ~> 3.0"},
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib","test/mocks"]
+  defp elixirc_paths(_), do: ["lib"]
+
 end

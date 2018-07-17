@@ -3,7 +3,7 @@ defmodule MoipEx.Plan do
     Representação de um plano
   """
 
-  alias MoipEx.{Config,Request,Response,Error,Plan,Interval,Trial}
+  alias MoipEx.{Config, Request, Response, Error, Plan, Interval, Trial}
 
   @doc """
   * :code - Identificador do plano na sua aplicação. Até 65 caracteres
@@ -17,7 +17,6 @@ defmodule MoipEx.Plan do
   * :status - Status do plano. Pode ser ACTIVE ou INACTIVE. O padrão é ACTIVE
   * :payment_method - Formas de pagamentos aceitas no plano. BOLETO, CREDIT_CARD ou ALL. Caso o atributo não seja informado, a forma de pagamento default é CREDIT_CARD.
   * :id - Identificador do plano moip
-
   """
   defstruct [code: nil,
             name: nil,
@@ -31,6 +30,7 @@ defmodule MoipEx.Plan do
             status: nil,
             payment_method: nil,
             id: nil]
+
   @enforce_keys [:code]
   @type t :: %__MODULE__{
                         code: String.t,
@@ -45,7 +45,6 @@ defmodule MoipEx.Plan do
                         payment_method: String.t,
                         id: String.t
                       }
-
 
   def create(plan = %Plan{}) do
     {status,response} =  Request.request(:post, Config.assinaturas_url <> "/plans", Request.to_request_string(plan))
